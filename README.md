@@ -1,2 +1,2 @@
-# Bazy_danych
+# Data_bases
 University course
