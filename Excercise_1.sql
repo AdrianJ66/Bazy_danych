@@ -40,6 +40,12 @@ COMMENT ON TABLE firma.pensja_stanowisko IS 'To jest tabela zwierająca informac
 COMMENT ON TABLE firma.premia IS 'To jest tabela zwierająca informacje o premiach';
 COMMENT ON TABLE firma.wynagrodzenie IS 'To jest tabela zwierająca informacje o wynagrodzeniach';
 
+--f--
+ALTER TABLE firma.godziny  DROP CONSTRAINT pracownik;
+ALTER TABLE firma.wynagrodzenie  DROP CONSTRAINT pracownik ;
+ALTER TABLE firma.wynagrodzenie DROP CONSTRAINT godziny ;
+ALTER TABLE firma.wynagrodzenie DROP CONSTRAINT pensja ;
+ALTER TABLE firma.wynagrodzenie DROP CONSTRAINT premia;
 
 
 --5--
@@ -108,6 +114,23 @@ SELECT SUM(liczba_godzin*kwota),stanowisko FROM firma.pracownicy AS pr JOIN firm
 --g--
 SELECT COUNT(id_premii) FROM firma.pracownicy AS pr JOIN firma.wynagrodzenie AS w ON w.id_pracownika=pr.id_pracownika  JOIN firma.pensja_stanowisko AS ps ON w.id_pensji=ps.id_pensji JOIN firma.godziny AS g ON g.id_pracownika=w.id_pracownika GROUP BY stanowisko;
 
+--h--
+DELETE FROM firma.pracownicy WHERE id_pracownika NOT IN ( SELECT pr.id_pracownika FROM firma.pracownicy AS pr JOIN firma.wynagrodzenie AS w ON w.id_pracownika=pr.id_pracownika  
+JOIN firma.pensja_stanowisko AS ps ON w.id_pensji=ps.id_pensji 
+JOIN firma.godziny AS g ON g.id_pracownika=w.id_pracownika 
+FULL JOIN firma.premia ON premia.id_premii=w.id_premii 
+WHERE liczba_godzin*ps.kwota > 2800 AND w.id_premii is null AND pr.id_pracownika is not null );
+
+--Zmienilem wartosc bo u mnie nikt nie zarabia mniej niz 2700--
+
+DELETE FROM firma.godziny WHERE id_pracownika NOT IN ( SELECT id_pracownika FROM firma.pracownicy );
+
+DELETE FROM firma.wynagrodzenie WHERE id_pracownika NOT IN ( SELECT id_pracownika FROM firma.pracownicy );
+
+DELETE FROM firma.pensja_stanowisko WHERE id_pensji NOT IN ( SELECT id_pensji FROM firma.wynagrodzenie );
+
+DELETE FROM firma.premia WHERE id_premii NOT IN ( SELECT id_premii FROM firma.wynagrodzenie );
+
 
 
 --8--
@@ -119,6 +142,16 @@ SELECT id_pracownika,nazwisko,SUBSTRING(telefon,0,4)||'-'||SUBSTRING(telefon,4,4
 SELECT UPPER(imie), UPPER(nazwisko) FROM firma.pracownicy WHERE (LENGTH(pracownicy.nazwisko))=(SELECT MAX(LENGTH(pracownicy.nazwisko)) FROM firma.pracownicy);
 --d--
 SELECT MD5(imie||nazwisko||adres||telefon||liczba_godzin*ps.kwota) FROM firma.pracownicy AS pr JOIN firma.wynagrodzenie AS w ON w.id_pracownika=pr.id_pracownika  
+JOIN firma.pensja_stanowisko AS ps ON w.id_pensji=ps.id_pensji 
+JOIN firma.godziny AS g ON g.id_pracownika=w.id_pracownika 
+FULL JOIN firma.premia ON premia.id_premii=w.id_premii WHERE pr.id_pracownika is not null;
+
+--9--
+SELECT 'Pracownik ' || imie || ' ' || nazwisko || ', w dniu '|| EXTRACT(DAY from g.data)||'.'
+||EXTRACT(MONTH FROM g.data)||'.'||EXTRACT(YEAR FROM g.data)||' otrzymał pensję całkowitą na kwotę ' 
+||g.liczba_godzin*ps.kwota+firma.premia.kwota|| ' zł, gdzie wynagrodzenie zasadnicze wynosiło: '||160*ps.kwota ||' zł, premia: '
+||firma.premia.kwota||' zł, nadgodziny: '||(liczba_godzin-160)*ps.kwota||' zł. '	
+FROM firma.pracownicy AS pr JOIN firma.wynagrodzenie AS w ON w.id_pracownika=pr.id_pracownika  
 JOIN firma.pensja_stanowisko AS ps ON w.id_pensji=ps.id_pensji 
 JOIN firma.godziny AS g ON g.id_pracownika=w.id_pracownika 
 FULL JOIN firma.premia ON premia.id_premii=w.id_premii WHERE pr.id_pracownika is not null;
