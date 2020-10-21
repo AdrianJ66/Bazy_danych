@@ -35,6 +35,9 @@ SELECT ST_AsEWKT(geometria), ST_Area(geometria), ST_Perimeter(geometria) FROM bu
 SELECT nazwa, ST_Area(geometria) FROM budynki ORDER BY nazwa;
 SELECT nazwa, ST_Perimeter(geometria) FROM budynki ORDER BY ST_Area(geometria) DESC LIMIT 2;
 SELECT ST_Distance(budynki.geometria, punkty_informacyjne.geometria) FROM budynki, punkty_informacyjne WHERE budynki.nazwa LIKE 'BuildingC' AND punkty_informacyjne.nazwa LIKE 'G';
-SELECT ST_Area(ST_Intersection(ST_Buffer((SELECT geometria FROM budynki WHERE nazwa LIKE 'BuildingB'), 0.5), (SELECT geometria FROM budynki WHERE nazwa LIKE 'BuildingC')));
+SELECT ST_AREA(geometria) - ST_AREA(ST_INTERSECTION((SELECT geometria FROM budynki WHERE nazwa = 'BuildingB'), (SELECT ST_BUFFER(ST_FORCERHR(ST_BOUNDARY(geometria)), 0.5, 'side=right') FROM budynki WHERE nazwa = 'BuildingB'))) AS "Pole" FROM budynki WHERE nazwa = 'BuildingB';
 SELECT id, nazwa FROM budynki WHERE ST_Y(ST_Centroid(geometria)) > ST_Y(ST_PointN((SELECT geometria FROM drogi WHERE nazwa LIKE 'RoadX'), 1));
 SELECT ST_Area(ST_SymDifference((SELECT geometria FROM budynki WHERE nazwa LIKE 'BuildingC'), ST_GeomFromText('POLYGON((4 7, 6 7, 6 8, 4 8, 4 7))')));
+
+
+
