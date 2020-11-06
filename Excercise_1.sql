@@ -49,20 +49,77 @@ ALTER TABLE firma.wynagrodzenie DROP CONSTRAINT premia;
 
 
 --5--
-
-INSERT INTO firma.pracownicy VALUES (1,'Marek', 'Jakimowicz', 'Końskie', '111 222 333'),
-(2,'Gabriel','Marcyn','Włoszczowa','121 121 211'), (3,'Adrianna', 'Kokoszka', 'Kraków', '333 222 111'), (4,'Justyna', 'Szpyrka','Starachowice','313 113 323'),(5,'Mariola', 'Łapacz', 'Krosno','414 414 414'), (6,'Zbigniew', 'Misky','Jasienica','551 551 525'), (7,'Piotr', 'Passlack','Toruń','616 616 166'), (8,'Adrian', 'Jakiela', 'Iwonicz','777 777 777'), (9,'Rafał', 'Penar', 'Rakowice', '888 888 888'), (10,'Karolina', 'Gaduła', 'Czosnek', '999 999 999');
-INSERT INTO firma.godziny VALUES (1,'2020-05-10',170,1), (2,'2020-05-10',175,2), (3,'2020-05-10',164,3), (4,'2020-05-10',162,4), (5,'2020-05-10',161,5), (6,'2020-05-10',160,6), (7,'2020-05-10',175,7), (8,'2020-05-10',150,8), (9,'2020-05-10',164,9), (10,'2020-05-10',161,10) ;
-INSERT INTO firma.pensja_stanowisko VALUES (1,'ScrumMaster',150), (2,'Sekretarka', 80),(3,'Tester',80),(4,'Kucharz',22),(5,'Sprzątacz',17),(6,'Stażysta',17),(7,'Kierownik',120),(8,'Kierowca',20),(9,'Junior Developer',40),(10,'Senior Developer',100);
-INSERT INTO firma.premia VALUES (1,'Uznaniowa',1000),(2,'Okolicznościowa',2000),(3,'Przy awansie',3000),(4,'Za zasługi',2500),(5,'Za dobre wyniki',1500),(6,'Za poświecenie dla pracy',500),(7,'Za wybitne osiągnięcia',5000),(8,'Za skończenie projektu',800),(9,'Za skuteczność',700),(10,'Co roczna',200);
-INSERT INTO firma.wynagrodzenie VALUES (1,'2020-05-10',1,1,1,NULL),(2,'2020-05-10',2,2,2,1),(3,'2020-05-10',3,3,3,2),(4,'2020-05-10',4,4,4,1),(5,'2020-05-10',5,5,5,NULL),(6,'2020-05-10',6,6,6,NULL),(7,'2020-05-10',7,7,7,NULL),(8,'2020-05-10',8,8,8,5), (9,'2020-05-10',9,9,9,9),(10,'2020-05-10',10,10,10,NULL);
-
 --a--
-ALTER TABLE firma.godziny ADD COLUMN miesiac DATE;
-ALTER TABLE firma.godziny ADD COLUMN tydzien DATE;
+ALTER TABLE firma.godziny ADD COLUMN miesiac INT;
+ALTER TABLE firma.godziny ADD COLUMN dzien_tygodnia INT;
 
 --b--
 ALTER TABLE firma.wynagrodzenie ALTER COLUMN data TYPE TEXT;
+
+--Inserty:
+
+INSERT INTO firma.pracownicy VALUES 
+(1,'Marek', 'Jakimowicz', 'Końskie', '111 222 333'),
+(2,'Gabriel','Marcyn','Włoszczowa','121 121 211'), 
+(3,'Adrianna', 'Kokoszka', 'Kraków', '333 222 111'), 
+(4,'Justyna', 'Szpyrka','Starachowice','313 113 323'),
+(5,'Mariola', 'Łapacz', 'Krosno','414 414 414'), 
+(6,'Zbigniew', 'Misky','Jasienica','551 551 525'), 
+(7,'Piotr', 'Passlack','Toruń','616 616 166'), 
+(8,'Adrian', 'Jakiela', 'Iwonicz','777 777 777'), 
+(9,'Rafał', 'Penar', 'Rakowice', '888 888 888'), 
+(10,'Karolina', 'Gaduła', 'Czosnek', '999 999 999');
+
+INSERT INTO firma.godziny VALUES 
+(1,'2020-05-10',170,1,1,1), 
+(2,'2020-05-10',175,2,2,2), 
+(3,'2020-05-10',164,3,3,3), 
+(4,'2020-05-10',162,4,4,4), 
+(5,'2020-05-10',161,5,5,5), 
+(6,'2020-05-10',160,6,6,6), 
+(7,'2020-05-10',175,7,7,7), 
+(8,'2020-05-10',150,8,8,8), 
+(9,'2020-05-10',164,9,9,9), 
+(10,'2020-05-10',161,10,10,10);
+
+
+INSERT INTO firma.pensja_stanowisko VALUES 
+(1,'ScrumMaster',150), 
+(2,'Sekretarka', 80),
+(3,'Tester',80),
+(4,'Kucharz',22),
+(5,'Sprzątacz',17),
+(6,'Stażysta',17),
+(7,'Kierownik',120),
+(8,'Kierowca',20),
+(9,'Junior Developer',40),
+(10,'Senior Developer',100);
+
+
+INSERT INTO firma.premia VALUES 
+(1,'Uznaniowa',1000),
+(2,'Okolicznościowa',2000),
+(3,'Przy awansie',3000),
+(4,'Za zasługi',2500),
+(5,'Za dobre wyniki',1500),
+(6,'Za poświecenie dla pracy',500),
+(7,'Za wybitne osiągnięcia',5000),
+(8,'Za skończenie projektu',800),
+(9,'Za skuteczność',700),
+(10,'Co roczna',200);
+
+
+INSERT INTO firma.wynagrodzenie VALUES 
+(1,'2020-05-10',1,1,1,NULL),
+(2,'2020-05-10',2,2,2,1),
+(3,'2020-05-10',3,3,3,2),
+(4,'2020-05-10',4,4,4,1),
+(5,'2020-05-10',5,5,5,NULL),
+(6,'2020-05-10',6,6,6,NULL),
+(7,'2020-05-10',7,7,7,NULL),
+(8,'2020-05-10',8,8,8,5), 
+(9,'2020-05-10',9,9,9,9),
+(10,'2020-05-10',10,10,10,NULL);
 
 
 --6--
