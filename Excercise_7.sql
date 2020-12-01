@@ -178,6 +178,6 @@ USING gist (ST_ConvexHull(rast));
 SELECT AddRasterConstraints('jakiela'::name,
 'porto_ndvi2'::name,'rast'::name);
 
---Zebranie wyników
+--Zebranie wyników widoczne na screenie
 
 
